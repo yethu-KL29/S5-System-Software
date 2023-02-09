@@ -3,20 +3,20 @@
 #include <stdlib.h>
 int main()
 {
-    FILE *fp1, *fp2, *fp3, *fp4;
+    FILE *fp1, *fp2, *fp3, *fp4; //Declaration of file pointers
 
-    fp1 = fopen("input.dat", "r");
+    fp1 = fopen("input.data", "r");//Opening of files
     fp2 = fopen("symptab.dat", "w");
     fp3 = fopen("out.dat", "w");
     fp4 = fopen("optab.dat", "r");
     char opcode[10], operand[10], label[10], code[10];
 
-    fscanf(fp1, "%s%s%s", label, opcode, operand);
-    int start, locctr, length;
-    if (strcmp(opcode, "START") == 0)
+    fscanf(fp1, "%s%s%s", label, opcode, operand);//Reading first line from input file
+    int address, locctr, length;
+    if (strcmp(opcode, "START") == 0)//Checking if opcode is START
     {
-        start = atoi(operand);
-        locctr = start;
+        address = atoi(operand);//Converting operand to integer
+        locctr = address;
         fprintf(fp3, "\t%s\t%s\t%s\n", label, opcode, operand);
         fscanf(fp1, "%s%s%s", label, opcode, operand);
     }
@@ -26,7 +26,7 @@ int main()
     }
     while (strcmp(opcode, "END") != 0)
     {
-        fprintf(fp3, "%d\t", locctr);
+        fprintf(fp3, "%d\t", locctr);//
         if (strcmp(label, "**") != 0)
         {
             fprintf(fp2, "%s\t%d\n", label, locctr);
@@ -36,7 +36,7 @@ int main()
         // checking for opcode
         while (strcmp(code, "END") != 0)
         {
-            if (!strcmp(opcode, code))
+            if (strcmp(opcode, code)==0)
             {
                 locctr += 3;
                 break;
@@ -65,8 +65,8 @@ int main()
         fscanf(fp1, "%s%s%s", label, opcode, operand);
     }
 
-    fprintf(fp3, "%s\t%s\t%s\n", label, opcode, operand);
-    length = locctr - start;
+    fprintf(fp3, "%s\t%s\t%s\n", label, opcode, operand); //Writing last line of input file into output file
+    length = locctr - address;
     printf("The length of program is %d", length);
     fclose(fp1);
     fclose(fp2);
